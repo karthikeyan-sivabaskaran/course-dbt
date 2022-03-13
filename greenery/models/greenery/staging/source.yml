@@ -1,0 +1,91 @@
+version: 2
+
+sources:
+  - name: greenery_source
+    schema: public
+    database: dbt # this is the name of our database
+
+    quoting:
+      database: false
+      schema: false
+      identifier: false
+
+    freshness:
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+
+    tables:
+      - name: superheroes 
+        loaded_at_field: created_at
+        description: >
+          Contains demographic information about each superhero
+      
+      - name: users
+        description: >
+          Contains users data of greenery
+        columns:
+          - name: user_id
+            description: Primary Key for users table
+            tests:
+              - unique
+              - not_null
+
+      - name: addresses
+        description: >
+          Contains addresses of greenery user's
+        columns:
+          - name: address_id
+            description: Primary Key for addresses table
+            tests:
+              - unique
+              - not_null
+
+      - name: events
+        description: >
+          Contains events data
+        columns:
+          - name: event_id
+            description: Primary Key for events table
+            tests:
+              - unique
+              - not_null
+
+      - name: orders
+        description: >
+          Contains greenery orders data
+        columns:
+          - name: order_id
+            description: Primary Key for orders table
+            tests:
+              - unique
+              - not_null
+
+      - name: products
+        description: >
+          Contains greenery products data
+        columns:
+          - name: product_id
+            description: Primary Key for products table
+            tests:
+              - unique
+              - not_null
+
+      - name: order_items
+        description: >
+            Contains order_items data
+        tests:
+        # order_id + product_id is the primary Key for products table
+          - dbt_utils.unique_combination_of_columns:  
+              combination_of_columns:
+                - order_id
+                - product_id
+        
+      - name: promos
+        description: >
+          Contains promos data
+        columns:
+          - name: promo_id
+            description: Primary Key for promos table
+            tests:
+              - unique
+              - not_null
