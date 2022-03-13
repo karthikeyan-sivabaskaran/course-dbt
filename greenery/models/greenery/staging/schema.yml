@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: stg_users
+    description: >
+      Contains users data of greenery
+    columns:
+      - name: user_id
+        description: Primary Key for users table
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_addresses
+    description: >
+      Contains addresses of greenery user's
+    columns:
+      - name: address_id
+        description: Primary Key for addresses table
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_events
+    description: >
+      Contains events data
+    columns:
+      - name: event_id
+        description: Primary Key for events table
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders
+    description: >
+      Contains greenery orders data
+    columns:
+      - name: order_id
+        description: Primary Key for orders table
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_products
+    description: >
+      Contains greenery products data
+    columns:
+      - name: product_id
+        description: Primary Key for products table
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_order_items
+    description: >
+        Contains order_items data
+    tests:
+    # order_id + product_id is the primary Key for products table
+      - dbt_utils.unique_combination_of_columns:  
+          combination_of_columns:
+            - order_id
+            - product_id
+  
+  - name: stg_promos
+    description: >
+      Contains promos data
+    columns:
+      - name: promo_id
+        description: Primary Key for promos table
+        tests:
+          - unique
+          - not_null
